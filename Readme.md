@@ -1,1 +1,1 @@
-# nand2
+# Chapter 7 VM to assembly compiler implementation
