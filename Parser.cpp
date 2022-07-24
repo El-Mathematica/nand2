@@ -30,3 +30,7 @@ void Parser::advance() {
         advance();
     }
 }
+
+bool Parser::inArithmeticCommands() {
+    return find(arithmeticCommands.begin(), arithmeticCommands.end(), currentCommand) != arithmeticCommands.end();
+}
