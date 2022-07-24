@@ -5,6 +5,28 @@ Parser::Parser(string filename) {
 }
 
 bool Parser::hasMoreCommands() {
-    cout << "true" << endl;
+    int c = file.peek();
+    if (c == EOF) {
+        if(file.eof()) {
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+
     return 1;
+}
+
+void Parser::advance() {
+    string line;
+    getline(file, line);
+
+    line.erase(remove(line.begin(), line.end(), ' '), line.end());
+
+    if(!(line.empty() || line.substr(0, 2) == "//")) {
+        currentCommand = line;
+    } else {
+        advance();
+    }
 }
