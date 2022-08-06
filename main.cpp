@@ -28,12 +28,16 @@ int main(int argc, char* argv[]) {
             string pathString = entry.path().string(); //variable containing path string of file
             if(pathString.substr(pathString.find(".")) == ".vm") { //if encountering a vm file
                 Parser parser(pathString); //create parser module for each vm file
-                codeWriter.setFileName(pathString); //notify codewriter another vm file has been opened
+                codeWriter.setFileName(fileOrDir, pathString); //notify codewriter another vm file has been opened
                 while(parser.hasMoreCommands()) {
                     parser.advance();
-
-                    if(parser.inArithmeticCommands()) {
-                        cout << parser.currentCommand + "is arithmetic" << endl;
+                    
+                    if(parser.commandType() == Parser::CommandType::C_ARITHMETIC) {
+                        codeWriter.writeArithmetic(parser.currentCommand);
+                    } else if(parser.commandType() == Parser::CommandType::C_PUSH) {
+                        cout << parser.currentCommand.back() << endl;
+                        string index(1, parser.currentCommand.back());
+                        codeWriter.WritePushPop(Parser::CommandType::C_PUSH, "constant", index);
                     }
                 }
             }

@@ -34,3 +34,12 @@ void Parser::advance() {
 bool Parser::inArithmeticCommands() {
     return find(arithmeticCommands.begin(), arithmeticCommands.end(), currentCommand) != arithmeticCommands.end();
 }
+
+Parser::CommandType Parser::commandType() {
+    if(inArithmeticCommands()) {
+        cout << "working" << endl;
+        return C_ARITHMETIC;
+    } else {
+        return C_PUSH;
+    }
+} 

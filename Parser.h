@@ -22,6 +22,7 @@ class Parser {
         bool hasMoreCommands();
         void advance();
         bool inArithmeticCommands();
+        
 
         CommandType commandType();
         string arg1();

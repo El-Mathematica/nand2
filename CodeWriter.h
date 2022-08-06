@@ -15,9 +15,9 @@ public:
     ofstream outputFile;
     CodeWriter();
 
-    void setFileName(string fileName);
+    void setFileName(string fileName, string path);
     void writeArithmetic(string command);
-    void WritePushPop(Parser::CommandType pushorpop, string segment, int index);
+    void WritePushPop(Parser::CommandType pushorpop, string segment, string index);
 };
 
 #endif

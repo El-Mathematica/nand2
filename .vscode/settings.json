@@ -2,7 +2,8 @@
     "files.associations": {
         "string": "cpp",
         "fstream": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "filesystem": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++17"
 }
