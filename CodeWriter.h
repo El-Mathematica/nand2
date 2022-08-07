@@ -13,6 +13,8 @@ class CodeWriter {
 public:
     string fileName = "output.asm";
     ofstream outputFile;
+    int multiCommandCount = 0;
+
     CodeWriter();
 
     void setFileName(string fileName, string path);

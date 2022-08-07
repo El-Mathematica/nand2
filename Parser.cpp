@@ -21,12 +21,15 @@ bool Parser::hasMoreCommands() {
 void Parser::advance() {
     string line;
     getline(file, line);
+    
+    
 
-    line.erase(remove(line.begin(), line.end(), ' '), line.end());
 
     if(!(line.empty() || line.substr(0, 2) == "//")) {
         currentCommand = line;
+        line.substr(line.find_first_not_of(" "), line.find_last_not_of(" ") - line.find_first_not_of(" "));
     } else {
+        
         advance();
     }
 }
@@ -43,3 +46,29 @@ Parser::CommandType Parser::commandType() {
         return C_PUSH;
     }
 } 
+
+string Parser::arg1() {
+
+    int i = currentCommand.find(" ") + 1;
+
+    string arg1 = "";
+    while(true) {
+        if(!(currentCommand[i] == *" ")) {
+            arg1 = arg1 + currentCommand[i];
+
+            i += 1;
+        } else {
+            break;
+        }
+    }
+    return arg1;
+}
+
+string Parser::arg2() {
+    int i = currentCommand.find(arg1()) + 1;
+    while(currentCommand[i] != *" ") {
+        i++;
+    }
+
+    return currentCommand.substr(i+1);
+}
