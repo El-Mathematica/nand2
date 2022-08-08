@@ -7,7 +7,7 @@ CodeWriter::CodeWriter() {
 void CodeWriter::setFileName(string filename, string path){
     fileName = filename;
 
-    string purepath = path.erase(path.find(".vm"));
+    purepath = path.erase(path.find(".vm"));
     purepath = purepath + ".asm";
     outputFile.open(purepath);
 }
@@ -166,7 +166,8 @@ void CodeWriter::writeArithmetic(string command) {
 }
 
 void CodeWriter::WritePushPop(Parser::CommandType pushorpop, string segment, string index) {
-    if(pushorpop==Parser::CommandType::C_PUSH) {
+    if(pushorpop==Parser::CommandType::C_PUSH && segment == "constant") {
+        cout << segment << endl;
         outputFile << "@" << index << endl;
         outputFile << "D=A" << endl;
         outputFile << "@SP" << endl;
@@ -175,7 +176,87 @@ void CodeWriter::WritePushPop(Parser::CommandType pushorpop, string segment, str
         outputFile << "@SP" << endl;
         outputFile << "M=M+1" << endl;
 
-    } else {
+    } else if(pushorpop==Parser::CommandType::C_PUSH && (segment == "local" || segment == "argument" || segment == "this" || segment == "that")){
+        outputFile << "@" + m[segment] << endl;
+        outputFile << "D=M" << endl;
+        outputFile << "@" << index << endl;
+        outputFile << "D=D+A" << endl;
+        outputFile << "A=D" << endl;
+        outputFile << "D=M" << endl;
+        outputFile << "@SP" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "M=D" << endl;
+        outputFile << "@SP" << endl;
+        outputFile << "M=M+1" << endl;
+    } else if(pushorpop==Parser::CommandType::C_PUSH && segment != "static") {
+        int address = stoi(index) + stoi(m[segment]);
+        outputFile << "@" + to_string(address) << endl;
+        outputFile << "D=M" << endl;
+        outputFile << "@SP" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "M=D" << endl;
+        outputFile << "@SP" << endl;
+        outputFile << "M=M+1" << endl;
+    } else if(pushorpop==Parser::CommandType::C_PUSH) {
+        outputFile << "@" << fileName.substr(0, fileName.find(".")) << "." << index << endl;
+        outputFile << "D=M" << endl;
+        outputFile << "@SP" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "M=D" << endl;
+        outputFile << "@SP" << endl;
+        outputFile << "M=M+1" << endl;
+
+    } else if(pushorpop==Parser::CommandType::C_POP && (segment == "local" || segment == "argument" || segment == "this" || segment == "that")) {
+        
+
+        outputFile << "@" + m[segment] << endl;
+        outputFile << "D=M" << endl;
+        outputFile << "@" << index << endl;
+        outputFile << "D=D+A" << endl;
+        outputFile << "@R13" << endl;
+        outputFile << "M=D" << endl;
+
+        outputFile << "@SP" << endl;
+        outputFile << "M=M-1" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "D=M" << endl;
+        
+        
+        outputFile << "@R13" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "M=D" << endl;
+
+    } else if(pushorpop==Parser::CommandType::C_POP && segment != "static") {
+        int address = stoi(index) + stoi(m[segment]);
+        outputFile << "@" + to_string(address) << endl;
+        outputFile << "D=A" << endl;
+        outputFile << "@R14" << endl;
+        outputFile << "M=D" << endl;
+
+        outputFile << "@SP" << endl;
+        outputFile << "M=M-1" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "D=M" << endl;
+
+        outputFile << "@R14" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "M=D" << endl;
+
+    } else if(pushorpop==Parser::CommandType::C_POP) {
+        outputFile << "@" << fileName.substr(0, fileName.find(".")) << "." << index << endl;
+        outputFile << "D=A" << endl;
+        outputFile << "@R15" << endl;
+        outputFile << "M=D" << endl;
+
+        
+        outputFile << "@SP" << endl;
+        outputFile << "M=M-1" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "D=M" << endl;
+
+        outputFile << "@R15" << endl;
+        outputFile << "A=M" << endl;
+        outputFile << "M=D" << endl;
 
     }
 }

@@ -33,6 +33,8 @@ int main(int argc, char* argv[]) {
             } else if(parser.commandType() == Parser::CommandType::C_PUSH) {
                 codeWriter.WritePushPop(Parser::CommandType::C_PUSH, parser.arg1(), parser.arg2());
 
+            } else if(parser.commandType() == Parser::CommandType::C_POP) {
+                codeWriter.WritePushPop(Parser::CommandType::C_POP, parser.arg1(), parser.arg2());
             }
         }
 
@@ -45,12 +47,19 @@ int main(int argc, char* argv[]) {
                 codeWriter.setFileName(fileOrDir, pathString); //notify codewriter another vm file has been opened
                 while(parser.hasMoreCommands()) {
                     parser.advance();
-
+                    
                     if(parser.commandType() == Parser::CommandType::C_ARITHMETIC) {
                         codeWriter.writeArithmetic(parser.currentCommand);
-                    } else if(parser.commandType() == Parser::CommandType::C_PUSH) {
 
+                    } else if(parser.commandType() == Parser::CommandType::C_PUSH) {
+                        
+                        cout << "THIS IS WHAT HAPPENS WHEN A PUSH COMMAND IS DETECTED" << endl;      
                         codeWriter.WritePushPop(Parser::CommandType::C_PUSH, parser.arg1(), parser.arg2());
+                        
+
+                    } else if(parser.commandType() == Parser::CommandType::C_POP) {
+                        cout << "THIS IS WHAT HAPPENS WHEN A PULL COMMAND IS DETECTED" << endl;   
+                        codeWriter.WritePushPop(Parser::CommandType::C_POP, parser.arg1(), parser.arg2());
                     }
                 }
             }

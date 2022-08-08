@@ -40,10 +40,13 @@ bool Parser::inArithmeticCommands() {
 
 Parser::CommandType Parser::commandType() {
     if(inArithmeticCommands()) {
-        cout << "working" << endl;
         return C_ARITHMETIC;
-    } else {
+    } else if (currentCommand.find("push") != string::npos){
+
         return C_PUSH;
+    } else {
+
+        return C_POP;
     }
 } 
 
