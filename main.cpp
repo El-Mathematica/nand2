@@ -34,7 +34,16 @@ int main(int argc, char* argv[]) {
                 codeWriter.WritePushPop(Parser::CommandType::C_PUSH, parser.arg1(), parser.arg2());
 
             } else if(parser.commandType() == Parser::CommandType::C_POP) {
+                cout << parser.arg2() << endl;
                 codeWriter.WritePushPop(Parser::CommandType::C_POP, parser.arg1(), parser.arg2());
+            } else if(parser.commandType() == Parser::CommandType::C_CALL) {
+                codeWriter.writeCall(parser.arg1(), stoi(parser.arg2()));
+            } else if(parser.commandType() == Parser::CommandType::C_LABEL) {
+                codeWriter.writeLabel(parser.arg1());
+            } else if(parser.commandType() == Parser::CommandType::C_GOTO) {
+                codeWriter.writeGoto(parser.arg1());
+            } else if(parser.commandType() == Parser::CommandType::C_IF) {
+                codeWriter.writeIf(parser.arg1());
             }
         }
 
@@ -60,7 +69,15 @@ int main(int argc, char* argv[]) {
                     } else if(parser.commandType() == Parser::CommandType::C_POP) {
                         cout << "THIS IS WHAT HAPPENS WHEN A PULL COMMAND IS DETECTED" << endl;   
                         codeWriter.WritePushPop(Parser::CommandType::C_POP, parser.arg1(), parser.arg2());
-                    }
+                    } else if(parser.commandType() == Parser::CommandType::C_CALL) {
+                        codeWriter.writeCall(parser.arg1(), stoi(parser.arg2()));
+                    } else if(parser.commandType() == Parser::CommandType::C_LABEL) {
+                        codeWriter.writeLabel(parser.arg1());
+                    } else if(parser.commandType() == Parser::CommandType::C_GOTO) {
+                        codeWriter.writeGoto(parser.arg1());
+                    } else if(parser.commandType() == Parser::CommandType::C_IF) {
+                        codeWriter.writeIf(parser.arg1());
+            }
                 }
             }
             

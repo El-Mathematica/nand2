@@ -260,3 +260,25 @@ void CodeWriter::WritePushPop(Parser::CommandType pushorpop, string segment, str
 
     }
 }
+
+void CodeWriter::writeLabel(string label) {
+    outputFile << "(" << currentFunctionName << "$" << label << ")" << endl;
+}
+
+void CodeWriter::writeCall(string functionName, int numArgs) {
+    currentFunctionName = functionName;
+}
+
+void CodeWriter::writeGoto(string label) {
+    outputFile << "@" << currentFunctionName << "$" << label << endl;
+    outputFile << "0;JMP" << endl;
+}
+
+void CodeWriter::writeIf(string label) {
+    outputFile << "@SP" << endl;
+    outputFile << "M=M-1" << endl;
+    outputFile << "A=M" << endl;
+    outputFile << "D=M" << endl;
+    outputFile << "@" << currentFunctionName << "$" << label << endl;
+    outputFile << "D;JGT" << endl;
+}

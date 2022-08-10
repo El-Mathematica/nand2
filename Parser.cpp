@@ -41,11 +41,22 @@ bool Parser::inArithmeticCommands() {
 Parser::CommandType Parser::commandType() {
     if(inArithmeticCommands()) {
         return C_ARITHMETIC;
-    } else if (currentCommand.find("push") != string::npos){
-
+    } else if(currentCommand.find("push") != string::npos){
         return C_PUSH;
-    } else {
-
+    } else if(currentCommand.find("if-goto") != string::npos) {
+        return C_IF;
+    } else if(currentCommand.find("goto") != string::npos) {
+        return C_GOTO;
+    } else if(currentCommand.find("label") != string::npos) {
+        return C_LABEL;
+    } else if(currentCommand.find("call") != string::npos) {
+        return C_CALL;
+    } else if(currentCommand.find("function") != string::npos) {
+        return C_FUNCTION;
+    } else if(currentCommand.find("return") != string::npos) {
+        return C_RETURN;
+    }
+    else {
         return C_POP;
     }
 } 
@@ -56,7 +67,7 @@ string Parser::arg1() {
 
     string arg1 = "";
     while(true) {
-        if(!(currentCommand[i] == *" ")) {
+        if(isalnum(currentCommand[i])) {
             arg1 = arg1 + currentCommand[i];
 
             i += 1;
@@ -69,9 +80,17 @@ string Parser::arg1() {
 
 string Parser::arg2() {
     int i = currentCommand.find(arg1()) + 1;
-    while(currentCommand[i] != *" ") {
+    string arg2 = "";
+    while(isalnum(currentCommand[i])) {
         i++;
     }
 
-    return currentCommand.substr(i+1);
+    i++;
+
+    while(isalnum(currentCommand[i])) {
+        arg2 = arg2 + currentCommand[i];
+        i++;
+    }
+
+    return arg2;
 }
