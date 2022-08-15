@@ -17,6 +17,7 @@ public:
     string currentFunctionName = "";
     ofstream outputFile;
     int multiCommandCount = 0;
+    int functionCommandCount = 0;
     map<string, string> m = {{"local", "LCL"}, {"argument", "ARG"}, {"this", "THIS"}, {"that", "THAT"}, {"pointer", "3"}, {"temp", "5"}};
 
     CodeWriter();

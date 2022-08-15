@@ -19,15 +19,19 @@ bool Parser::hasMoreCommands() {
 }
 
 void Parser::advance() {
+
     string line;
     getline(file, line);
-    
-    
-
 
     if(!(line.empty() || line.substr(0, 2) == "//")) {
+
+        line = line.substr(line.find_first_not_of(" "));
+        line = line.substr(0, line.find("//"));
+        if(line[line.length() - 1] == *" ") {
+            line = line.substr(0, line.find_last_not_of(" ") + 1);
+        }
+        cout << currentCommand << endl;
         currentCommand = line;
-        line.substr(line.find_first_not_of(" "), line.find_last_not_of(" ") - line.find_first_not_of(" "));
     } else {
         
         advance();
@@ -67,7 +71,7 @@ string Parser::arg1() {
 
     string arg1 = "";
     while(true) {
-        if(isalnum(currentCommand[i])) {
+        if(isalnum(currentCommand[i]) || currentCommand[i] == *"." || currentCommand[i] == *"_") {
             arg1 = arg1 + currentCommand[i];
 
             i += 1;
@@ -75,19 +79,23 @@ string Parser::arg1() {
             break;
         }
     }
+
     return arg1;
 }
 
 string Parser::arg2() {
+
     int i = currentCommand.find(arg1()) + 1;
     string arg2 = "";
-    while(isalnum(currentCommand[i])) {
+    while(isalnum(currentCommand[i])  || currentCommand[i] == *"." || currentCommand[i] == *"_") {
+
         i++;
     }
 
     i++;
 
-    while(isalnum(currentCommand[i])) {
+    while(isalnum(currentCommand[i])  || currentCommand[i] == *"." || currentCommand[i] == *"_") {
+
         arg2 = arg2 + currentCommand[i];
         i++;
     }
